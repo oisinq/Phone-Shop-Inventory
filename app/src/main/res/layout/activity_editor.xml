@@ -1,91 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    tools:context=".EditorActivity">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Product name:"
-        android:textAppearance="?android:textAppearanceMedium"/>
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/edit_product_name"
-        style="@style/EditorFieldStyle" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Product price:"
-        android:textAppearance="?android:textAppearanceMedium"/>
-
-    <EditText
-        android:id="@+id/edit_product_price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/EditorFieldStyle" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Product quantity:"
-        android:textAppearance="?android:textAppearanceMedium"/>
-
+    android:layout_height="match_parent">
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <Button
-            android:id="@+id/minus_button"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:text="-" />
-        <EditText
-            android:id="@+id/edit_product_quantity"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        tools:context=".EditorActivity">
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/EditorFieldStyle" />
+            android:text="Product name:"
+            android:textAppearance="?android:textAppearanceMedium"/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/edit_product_name" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Product price:"
+            android:textAppearance="?android:textAppearanceMedium"/>
+
+        <EditText
+            android:id="@+id/edit_product_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Product quantity:"
+            android:textAppearance="?android:textAppearanceMedium"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/minus_button"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:text="-" />
+            <EditText
+                android:id="@+id/edit_product_quantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/plus_button"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:text="+" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Product name:"
+            android:textAppearance="?android:textAppearanceMedium"/>
+
+        <EditText
+            android:id="@+id/edit_supplier_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Supplier phone number:"
+            android:textAppearance="?android:textAppearanceMedium" />
+
+        <EditText
+            android:id="@+id/edit_supplier_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
         <Button
-            android:id="@+id/plus_button"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:text="+" />
+            android:id="@+id/order_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Order from supplier" />
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Product name:"
-        android:textAppearance="?android:textAppearanceMedium"/>
-
-    <EditText
-        android:id="@+id/edit_supplier_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/EditorFieldStyle" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Supplier phone number:"
-        android:textAppearance="?android:textAppearanceMedium" />
-
-    <EditText
-        android:id="@+id/edit_supplier_phone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/EditorFieldStyle" />
-
-    <Button
-        android:id="@+id/order_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Order from supplier" />
-</LinearLayout>
+</ScrollView>

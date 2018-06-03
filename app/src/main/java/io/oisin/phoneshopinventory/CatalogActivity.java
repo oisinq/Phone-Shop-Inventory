@@ -2,7 +2,6 @@ package io.oisin.phoneshopinventory;
 
 import android.app.LoaderManager;
 import android.content.ContentUris;
-import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -75,26 +74,11 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_insert_dummy_data:
-                insertProduct();
-                return true;
             case R.id.action_delete_all_entries:
                 getContentResolver().delete(InventoryEntry.CONTENT_URI, null, null);
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void insertProduct() {
-        ContentValues values = new ContentValues();
-
-        values.put(InventoryEntry.COLUMN_PRODUCT_NAME, "iPhone 7");
-        values.put(InventoryEntry.COLUMN_PRODUCT_QUANTITY, 5);
-        values.put(InventoryEntry.COLUMN_PRODUCT_PRICE, 599.99);
-        values.put(InventoryEntry.COLUMN_SUPPLIER_NAME, "Apple Inc");
-        values.put(InventoryEntry.COLUMN_SUPPLIER_PHONE, "+1 45345 313 5353");
-
-        Uri newUri = getContentResolver().insert(InventoryEntry.CONTENT_URI, values);
     }
 
     @Override
