@@ -109,8 +109,25 @@ public class EditorActivity extends AppCompatActivity implements
         String supplierNameStr = supplierNameEditText.getText().toString().trim();
         String supplierNumberStr = supplierNumberEditText.getText().toString().trim();
 
+        if (TextUtils.isEmpty(productNameStr) || TextUtils.isEmpty(productQuantityStr) ||
+                TextUtils.isEmpty(productPriceStr) || TextUtils.isEmpty(supplierNameStr)
+                || TextUtils.isEmpty(supplierNumberStr)) {
+            Toast.makeText(this, "No field can be empty!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         int productQuantity = Integer.parseInt(productQuantityStr);
         double productPrice = Double.parseDouble(productPriceStr);
+
+        if (productQuantity < 0) {
+            Toast.makeText(this, "Quantity can't be negative", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (productPrice < 0.0) {
+            Toast.makeText(this, "Price can't be negative", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         ContentValues values = new ContentValues();
         values.put(InventoryEntry.COLUMN_PRODUCT_NAME, productNameStr);
@@ -142,6 +159,7 @@ public class EditorActivity extends AppCompatActivity implements
                         Toast.LENGTH_SHORT).show();
             }
         }
+        finish();
     }
 
     @Override
@@ -155,7 +173,6 @@ public class EditorActivity extends AppCompatActivity implements
         switch (item.getItemId()) {
             case R.id.action_save:
                 saveProduct();
-                finish();
                 return true;
             case R.id.action_delete:
                 showDeleteConfirmationDialog();
