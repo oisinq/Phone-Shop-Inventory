@@ -4,9 +4,6 @@ import android.content.ContentResolver;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-/**
- * Created by Oisin Quinn (@oisin1001) on 01/06/2018.
- */
 public class InventoryContract {
 
     public static final String CONTENT_AUTHORITY = "io.oisin.phoneshopinventory";

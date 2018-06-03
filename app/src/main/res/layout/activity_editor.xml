@@ -39,11 +39,25 @@
         android:text="Product quantity:"
         android:textAppearance="?android:textAppearanceMedium"/>
 
-    <EditText
-        android:id="@+id/edit_product_quantity"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/EditorFieldStyle" />
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/minus_button"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:text="-" />
+        <EditText
+            android:id="@+id/edit_product_quantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/EditorFieldStyle" />
+        <Button
+            android:id="@+id/plus_button"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:text="+" />
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
@@ -68,4 +82,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/EditorFieldStyle" />
+
+    <Button
+        android:id="@+id/order_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Order from supplier" />
 </LinearLayout>

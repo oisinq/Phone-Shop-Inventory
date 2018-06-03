@@ -1,18 +1,3 @@
-/*
- * Copyright (C) 2016 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package io.oisin.phoneshopinventory;
 
 import android.app.AlertDialog;
@@ -27,10 +12,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -58,11 +45,9 @@ public class EditorActivity extends AppCompatActivity implements
 
         if (currentProductUri == null) {
             setTitle("Add a product");
-
             invalidateOptionsMenu();
         } else {
             setTitle("Edit a product");
-
             getLoaderManager().initLoader(EXISTING_PRODUCT_LOADER, null, this);
         }
 
@@ -72,11 +57,49 @@ public class EditorActivity extends AppCompatActivity implements
         supplierNameEditText = findViewById(R.id.edit_supplier_name);
         supplierNumberEditText = findViewById(R.id.edit_supplier_phone);
 
-        productNameEditText.setOnTouchListener(mTouchListener);
-        productQuantityEditText.setOnTouchListener(mTouchListener);
-        productPriceEditText.setOnTouchListener(mTouchListener);
-        supplierNameEditText.setOnTouchListener(mTouchListener);
-        supplierNumberEditText.setOnTouchListener(mTouchListener);
+        productNameEditText.setOnTouchListener(touchListener);
+        productQuantityEditText.setOnTouchListener(touchListener);
+        productPriceEditText.setOnTouchListener(touchListener);
+        supplierNameEditText.setOnTouchListener(touchListener);
+        supplierNumberEditText.setOnTouchListener(touchListener);
+
+        Button plusButton = findViewById(R.id.plus_button);
+        Button minusButton = findViewById(R.id.minus_button);
+        Button orderButton = findViewById(R.id.order_button);
+
+        minusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String quantityStr = productQuantityEditText.getText().toString().trim();
+                if (!TextUtils.isEmpty(quantityStr)) {
+                    int quantity = Integer.parseInt(quantityStr);
+                    if (quantity > 0) {
+                        productQuantityEditText.setText(Integer.toString(quantity - 1));
+                    }
+                }
+            }
+        });
+
+        plusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String quantityStr = productQuantityEditText.getText().toString().trim();
+                if (!TextUtils.isEmpty(quantityStr)) {
+                    int quantity = Integer.parseInt(quantityStr);
+                    productQuantityEditText.setText(Integer.toString(quantity + 1));
+                }
+            }
+        });
+
+        orderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String uri = "tel:" + supplierNumberEditText.getText().toString().trim();
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse(uri));
+                startActivity(intent);
+            }
+        });
     }
 
     private void saveProduct() {
@@ -87,7 +110,7 @@ public class EditorActivity extends AppCompatActivity implements
         String supplierNumberStr = supplierNumberEditText.getText().toString().trim();
 
         int productQuantity = Integer.parseInt(productQuantityStr);
-        int productPrice = Integer.parseInt(productPriceStr);
+        double productPrice = Double.parseDouble(productPriceStr);
 
         ContentValues values = new ContentValues();
         values.put(InventoryEntry.COLUMN_PRODUCT_NAME, productNameStr);
@@ -189,7 +212,7 @@ public class EditorActivity extends AppCompatActivity implements
             int supplierPhoneIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_SUPPLIER_PHONE);
 
             String name = cursor.getString(productNameIndex);
-            int price = cursor.getInt(productPriceIndex);
+            double price = cursor.getDouble(productPriceIndex);
             int quantity = cursor.getInt(productQuantityIndex);
             String supplierName = cursor.getString(supplierNameIndex);
             String phone = cursor.getString(supplierPhoneIndex);
@@ -197,7 +220,7 @@ public class EditorActivity extends AppCompatActivity implements
             productNameEditText.setText(name);
             supplierNameEditText.setText(supplierName);
             supplierNumberEditText.setText(phone);
-            String priceStr = Integer.toString(price);
+            String priceStr = Double.toString(price);
             productPriceEditText.setText(priceStr);
             String quantityStr = Integer.toString(quantity);
             productQuantityEditText.setText(quantityStr);
@@ -213,7 +236,7 @@ public class EditorActivity extends AppCompatActivity implements
         productPriceEditText.setText("");
     }
 
-    private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
+    private View.OnTouchListener touchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
             productHasChanged = true;
@@ -224,8 +247,8 @@ public class EditorActivity extends AppCompatActivity implements
     private void showUnsavedChangesDialog(DialogInterface.OnClickListener discardButtonClickListener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.unsaved_changes_dialog_msg);
-        builder.setPositiveButton(R.string.discard, discardButtonClickListener);
-        builder.setNegativeButton(R.string.keep_editing, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Discard", discardButtonClickListener);
+        builder.setNegativeButton("Continue", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 if (dialog != null) {
                     dialog.dismiss();
@@ -268,12 +291,12 @@ public class EditorActivity extends AppCompatActivity implements
     private void showDeleteConfirmationDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.delete_dialog_msg);
-        builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                deletePet();
+                deleteProduct();
             }
         });
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 if (dialog != null) {
                     dialog.dismiss();
@@ -285,16 +308,14 @@ public class EditorActivity extends AppCompatActivity implements
         alertDialog.show();
     }
 
-    private void deletePet() {
+    private void deleteProduct() {
         if (getIntent().getData() != null) {
             int rowsDeleted = getContentResolver().delete(getIntent().getData(), null, null);
 
             if (rowsDeleted == 0) {
-                Toast.makeText(this, getString(R.string.editor_delete_pet_failed),
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Failed to delete product", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this, getString(R.string.editor_delete_pet_successful),
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Product successfully deleted", Toast.LENGTH_SHORT).show();
             }
         }
 

@@ -1,18 +1,3 @@
-/*
- * Copyright (C) 2016 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package io.oisin.phoneshopinventory;
 
 import android.app.LoaderManager;
@@ -40,15 +25,15 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     InventoryDbHelper mDbHelper;
     static final int URL_LOADER = 0;
 
-    PetCursorAdapter petAdapter;
+    InventoryAdapter productAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_catalog);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton actionButton = findViewById(R.id.action_button);
+        actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(CatalogActivity.this, EditorActivity.class);
@@ -58,12 +43,12 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
         mDbHelper = new InventoryDbHelper(this);
 
-        ListView petListView = findViewById(R.id.list);
+        ListView productListView = findViewById(R.id.list);
 
-        petAdapter = new PetCursorAdapter(this ,null);
-        petListView.setAdapter(petAdapter);
+        productAdapter = new InventoryAdapter(this ,null);
+        productListView.setAdapter(productAdapter);
 
-        petListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        productListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Uri content = ContentUris.withAppendedId(InventoryEntry.CONTENT_URI, id);
@@ -73,7 +58,6 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
             }
         });
 
-        // Starts off the loader
         getLoaderManager().initLoader(URL_LOADER, null, this);
     }
 
@@ -92,7 +76,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_insert_dummy_data:
-                insertPet();
+                insertProduct();
                 return true;
             case R.id.action_delete_all_entries:
                 getContentResolver().delete(InventoryEntry.CONTENT_URI, null, null);
@@ -101,14 +85,14 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         return super.onOptionsItemSelected(item);
     }
 
-    private void insertPet() {
+    private void insertProduct() {
         ContentValues values = new ContentValues();
 
         values.put(InventoryEntry.COLUMN_PRODUCT_NAME, "iPhone 7");
         values.put(InventoryEntry.COLUMN_PRODUCT_QUANTITY, 5);
-        values.put(InventoryEntry.COLUMN_PRODUCT_PRICE, 59900);
+        values.put(InventoryEntry.COLUMN_PRODUCT_PRICE, 599.99);
         values.put(InventoryEntry.COLUMN_SUPPLIER_NAME, "Apple Inc");
-        values.put(InventoryEntry.COLUMN_SUPPLIER_PHONE, 7);
+        values.put(InventoryEntry.COLUMN_SUPPLIER_PHONE, "+1 45345 313 5353");
 
         Uri newUri = getContentResolver().insert(InventoryEntry.CONTENT_URI, values);
     }
@@ -124,11 +108,11 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        petAdapter.swapCursor(cursor);
+        productAdapter.swapCursor(cursor);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        petAdapter.swapCursor(null);
+        productAdapter.swapCursor(null);
     }
 }
