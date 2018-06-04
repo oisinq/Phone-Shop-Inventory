@@ -42,7 +42,6 @@ public class EditorActivity extends AppCompatActivity implements
 
         Intent intent = getIntent();
         currentProductUri = intent.getData();
-
         if (currentProductUri == null) {
             setTitle("Add a product");
             invalidateOptionsMenu();

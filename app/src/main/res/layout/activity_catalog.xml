@@ -21,4 +21,14 @@
         android:layout_alignParentRight="true"
         android:src="@drawable/ic_new_product"
         android:layout_margin="16dp" />
+
+    <TextView
+        android:id="@+id/empty_view"
+        android:layout_centerInParent="true"
+        android:padding="16dp"
+        android:text="Click the + button in the bottom right to add an item.\n(All fields are required)"
+        android:layout_width="wrap_content"
+        android:textAlignment="center"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:textAppearanceMedium" />
 </RelativeLayout>

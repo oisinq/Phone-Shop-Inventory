@@ -17,13 +17,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import io.oisin.phoneshopinventory.data.InventoryContract.InventoryEntry;
-import io.oisin.phoneshopinventory.data.InventoryDbHelper;
 
 public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    InventoryDbHelper mDbHelper;
     static final int URL_LOADER = 0;
-
     InventoryAdapter productAdapter;
 
     @Override
@@ -40,12 +37,14 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
             }
         });
 
-        mDbHelper = new InventoryDbHelper(this);
-
         ListView productListView = findViewById(R.id.list);
 
         productAdapter = new InventoryAdapter(this ,null);
         productListView.setAdapter(productAdapter);
+
+        View emptyView = findViewById(R.id.empty_view);
+        productListView.setEmptyView(emptyView);
+
 
         productListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
