@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -61,6 +62,8 @@ public class EditorActivity extends AppCompatActivity implements
         productPriceEditText.setOnTouchListener(touchListener);
         supplierNameEditText.setOnTouchListener(touchListener);
         supplierNumberEditText.setOnTouchListener(touchListener);
+
+        productPriceEditText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
         Button plusButton = findViewById(R.id.plus_button);
         Button minusButton = findViewById(R.id.minus_button);
